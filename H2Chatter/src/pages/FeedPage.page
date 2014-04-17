@@ -1,0 +1,34 @@
+<apex:page sidebar="false" showHeader="false">
+    
+    <style>
+        /*Override style*/
+        .chatterexpando{border-radius: 4px;}
+        .chatterfeedshell {            
+            border-radius: 8px; 
+            width: 100%; 
+            box-shadow: 0 5px 15px 1px rgba(0, 0, 0, 0.6), 
+                0 0 200px 1px rgba(255, 255, 255, 0.5)}
+        .feedrightbar, .bPageTitle {display:none}
+        .chatterexpando .feedpage {width: 100%;}
+        .publishercontainer {width:80%; position: absolute; z-index:100;}
+        .cxfeedinnerwrapper {margin-top: 80px; overflow-x: hidden; overflow-y: auto; max-height: 524px;}
+        .contentPublisherSlideDown table.postInput th {width: 80px;}
+        .contentPublisherSlideDown table.postInput td {text-align: left;}
+        .publishercontainer input[type="text"] {width: 75%}
+    </style>
+    <div style="height:100%; width: 100%">
+        <chatter:feedWithFollowers entityId="005i00000038X8V"/>
+    </div>
+    <apex:includeScript value="{!$Resource.jquery}"/>
+    <script>
+        $(document).ready(function(){
+            
+            //Recalculate feed's height
+            var h = $(window).height();
+            $("#feedwrapper").css("max-height", (h-80));
+            
+        });
+        
+    </script>
+    
+</apex:page>

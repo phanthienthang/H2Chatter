@@ -1,0 +1,266 @@
+<apex:page standardController="H2Chatter__c" tabStyle="H2Chatter__tab" sidebar="false" showHeader="false">
+    <style>
+        body {marign: 0px; padding: 0; background: #004050; width: 100%; height: 100%;}
+        .h2chatter{ background: #004050; width: 100%; height: 100%; margin: 0px; padding: 0; border-radius: 5px;}
+        .h2chatter .threecols {width: 100%; margin-top: 2px;}
+        .threecols .headerContent{overflow: hidden; position: relative; display: block;}
+        .threecols .leftContent{display: inline-block; float: left; width: 20%; padding-left: 5px; }
+        .threecols .mainContent{display: inline-block; padding-left: 12px; border-left: 1px solid #e9eaea; width: 75% !important; margin: 0px;}
+        
+        .headerContent .pageTitle {font-size: 32px; color: #fff; font-family: arial; padding-left: 5px; font-weight: normal;margin-left: 4px;}
+        
+        .userStatus {display: block;}
+        .userStatusImg, .userStatusName {display: inline-block; vertical-align: middle;}
+        .userStatusName {padding-left: 10px;}
+        
+        .userStatusName a, .msgNavigation a {color: #fff; text-decoration: none;}
+        .userStatusName a:hover, .msgNavigation a:hover {color: #f29724; cursor: pointer;}
+        .userStatusMsg {border-bottom: 1px solid #e9eaea; width: 100%; display:block; margin-bottom: 13px; padding-bottom: 9px;}
+        
+        .msgNavigation {padding-top: 10px;}
+        .msgNavigation ul {padding: 0; margin: 0px;}
+
+        #mainframe {
+            border-radius: 8px;
+            box-shadow: 0 5px 15px 1px rgba(0, 0, 0, 0.6), 
+                0 0 200px 1px rgba(255, 255, 255, 0.5)};
+            
+        }
+        /*Override style*/
+        .chatterexpando{border-radius: 4px;}
+        .chatterfeedshell {            
+            border-radius: 8px; 
+            padding-bottom: 10px; 
+            width: 76%; 
+            box-shadow: 0 5px 15px 1px rgba(0, 0, 0, 0.6), 
+                0 0 200px 1px rgba(255, 255, 255, 0.5)}
+        .feedrightbar, .bPageTitle {display:none}
+        ul {list-style: none; padding: 0;}
+        
+        /*H2 Tree*/
+        #h2htree {
+            background: #004050;
+            width: 98%;
+            color: white;
+            /*Some cool shadow and glow effect*/
+            box-shadow: 
+                0 5px 15px 1px rgba(0, 0, 0, 0.6), 
+                0 0 200px 1px rgba(255, 255, 255, 0.5);
+        }
+        /*heading styles*/
+        #h2htree h3 {
+            font-size: 12px;
+            line-height: 34px;
+            margin: 10px 5px 0 0;
+            padding: 0 5px;
+            cursor: pointer;
+            
+        }
+        /*heading hover effect*/
+        #h2htree h3:hover {
+            color: #f29724;
+            cursor: pointer;
+        }
+        /*iconfont styles*/
+        #h2htree h3 span {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        /*list items*/
+        #h2htree li {
+            list-style-type: none;
+            margin: 0px;
+        }
+        /*links*/
+        #h2htree ul ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 11px;
+            line-height: 27px;
+            display: block;
+            padding: 0 15px;
+            /*transition for smooth hover animation*/
+            transition: all 0.15s;
+        }
+        /*hover effect on links*/
+        #h2htree ul ul li a:hover {
+            background: #f29724;
+            cursor: pointer;
+        }
+        #h2htree ul ul li a:active {
+            background: #f29724;
+            cursor: pointer;
+        }
+        /*Lets hide the non active LIs by default*/
+        #h2htree ul ul {
+            display: none;
+        }
+        #h2htree li.active ul {
+            display: block;
+        }
+        #h2htree li.active {
+            color: #f29724;
+        }
+        
+    </style>
+    <apex:stylesheet value="{!URLFor($Resource.jquery_ui, 'css/jquery-ui.min.css')}"/>
+    <div class="h2chatter">
+        <div class="threecols">
+            <div class="headerContent">
+                <h1 class="pageTitle">H2</h1>
+                <div class="headerRightContent">
+                  
+                </div>
+            </div>
+            <div class="leftContent">
+                <div class="userStatus">
+                    <div class="userStatusImg"><chatter:userPhotoUpload ></chatter:userPhotoUpload></div>
+                    <div class="userStatusName"><a>{!$User.FirstName} {!$User.LastName}</a></div>
+                    <div class="userStatusMsg">
+                          <div class="msgNavigation">
+                               <ul>
+                                   <li>
+                                       <a>Messages</a>
+                                   </li>
+                               </ul>
+                          </div>
+                    </div> 
+                                     
+                </div>
+                <div id="h2htree">
+                    <ul>
+                        <li class="active">
+                            <h3><span class="icon-heart"></span>Feed</h3>
+                            <ul>
+                                <li><a>Followers</a></li>
+                                <li><a>Following</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3><span class="icon-dashboard"></span>Dashboard</h3>
+                            <ul>
+                                <li><a>Reports</a></li>
+                                <li><a>Search</a></li>
+                                <li><a>Graphs</a></li>
+                                <li><a>Settings</a></li>
+                            </ul>
+                        </li>
+                        <!-- we will keep this LI open by default -->
+                        <li>
+                            <h3><span class="icon-tasks"></span>Tasks</h3>
+                            <ul>
+                                <li><a>Todays tasks</a></li>
+                                <li><a>Urgent</a></li>
+                                <li><a>Overdues</a></li>
+                                <li><a>Recurring</a></li>
+                                <li><a>Settings</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3><span class="icon-calendar"></span>Calendar</h3>
+                            <ul>
+                                <li><a>Current Month</a></li>
+                                <li><a>Current Week</a></li>
+                                <li><a>Previous Month</a></li>
+                                <li><a>Previous Week</a></li>
+                                <li><a>Next Month</a></li>
+                                <li><a>Next Week</a></li>
+                                <li><a>Team Calendar</a></li>
+                                <li><a>Private Calendar</a></li>
+                                <li><a>Settings</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3><span class="icon-heart"></span>Favourites</h3>
+                            <ul>
+                                <li><a>Global favs</a></li>
+                                <li><a>My favs</a></li>
+                                <li><a>Team favs</a></li>
+                                <li><a>Settings</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3><span class="icon-heart"></span>Tools</h3>
+                            <ul>
+                                <li><a>Uploaded Files</a></li>                                
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>            
+            <apex:includeScript value="{!URLFOR($Resource.h2tree, '/prefixfree-1.0.7.js')}"/>
+            <apex:includeScript value="{!$Resource.jquery}"/>
+            <apex:includeScript value="{!URLFOR($Resource.jquery_ui, 'js/jquery-ui.min.js')}"/>
+            <script>
+                /*jQuery time*/
+                $(document).ready(function(){
+                    
+                    //Recalculate the height of main frame
+                    $("#mainframe").height($(window).height() - 50);
+                
+                    
+                    //Add event for main menus
+                    $("#h2htree h3").click(function(){
+                        //This reset loop is not a good solution and spend more effort of 
+                        //system.
+                        $("#h2htree h3").each(function(){$(this).css("color", "#ffffff");});
+                        $("#h2htree ul ul li a").each(function(){$(this).css("background", "none");});
+                       
+                        callUpdate(this);
+                        
+                        //slide up all the link lists
+                        $("#h2htree ul ul").slideUp();
+                        //slide down the link list below the h3 clicked - only if its closed
+                        if(!$(this).next().is(":visible"))
+                        {
+                            $(this).css("color","#f29724");
+                            $(this).next().slideDown();
+                        } else {
+                            $(this).css("color", "#ffffff");
+                        }
+                    });
+                    
+                    //Add event for sub menus - navigate to new new content
+                    $("#h2htree ul ul li a").click(function(){
+                    
+                        $("#h2htree ul ul li a").each(function(){$(this).css("background", "none");});
+                        $(this).css("background", "#f29724");
+                        callUpdate(this);
+                    });
+                    
+                    function callUpdate(iMenu) {
+                        var lText = $(iMenu).text(),
+                            lPageLink = lText+"Page";
+                        if (lText.indexOf($("#mainframe").attr("title")) == -1) {
+                            $("#mainframe").attr("title", lText);
+                            $("#mainframe").attr("src", lPageLink);
+                            
+                        }
+                    }
+                });
+                
+                function userDetail(iName) {
+                    $("#user_info_dlg").dialog({
+                          title: iName,
+                          modal: true,
+                          show: {
+                            effect: "clip",
+                            duration: 500
+                          },
+                          hide: {
+                            effect: "explode",
+                            duration: 1000
+                          }
+                        });
+                }
+            </script>           
+            
+            <div class="mainContent">
+                <apex:iframe width="75%" height="100%" src="/apex/FeedPage" id="mainframe" title="Feed"/>
+                
+            </div>
+            <div class="clearingBox"></div>
+        </div>        
+    </div>
+    <div id="user_info_dlg" style="display: none"></div>
+</apex:page>

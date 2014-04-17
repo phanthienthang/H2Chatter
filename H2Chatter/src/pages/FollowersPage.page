@@ -1,0 +1,5 @@
+<apex:page sidebar="false" showHeader="false" >
+    <div>
+    	<chatter:followers entityId="005i00000038X8V"/>    
+    </div>
+</apex:page>
