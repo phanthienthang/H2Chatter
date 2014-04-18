@@ -1,0 +1,103 @@
+<apex:page sidebar="false" showHeader="false" controller="TaskListController">
+    <apex:stylesheet value="{!URLFOR($Resource.jqgrid, 'css/ui.jqgrid.css')}"/>
+    <apex:includeScript value="{!$Resource.jquery}"/>
+    <apex:stylesheet value="{!URLFor($Resource.jquery_ui, 'css/jquery-ui.min.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jqgrid, 'js/i18n/grid.locale-en.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jqgrid, 'js/jquery.jqGrid.min.js')}"/>
+    <apex:form >
+        <apex:pageBlock >
+        <div id="responseErrors"></div>               
+        <div id="taskContainer" style="width: 90%"> 
+             <table id="jsontask"></table>
+             <div id="pjpage"></div>
+         </div>
+            
+            <script>
+                $(document).ready(function(){
+                
+                    var $grid = $("#jsontask");
+                    var w = $(window).width() - 2;
+                    $grid.jqGrid({
+                        
+                        url: 'local',
+                        datatype:"json",
+                        jsonReader:{repeatitems:false},
+                        colNames:['Subject','Status','Comments'],
+                        colModel:[
+                                  {name:'subject',   index:'subject', width:(w*10)/100, resizable:false, sortable:false, align:"center" },
+                                  {name:'status',    index:'status',  width:(w*10)/100, resizable:false, sortable:false, align:"left" },
+                                  {name:'comment',   index:'comment', width:(w*80)/100, resizable:false, sortable:false, align:"left" }
+                                 ],
+                        height: 'auto',
+                        autowidth: false,
+                        scrollOffset:18,
+                        shrinkToFit: true,
+                        rownumbers: false,
+                        pager: "#pjpage",
+                        rowNum: 100,
+                        sortname:'subject',
+                        sortorder: "desc",
+                        mtype:'GET',
+                        gridview:true,
+                        altRows:true,
+                        //altclass:'jqgrid-altRowColor',
+                        viewrecords:true,
+                        hoverrows:false,
+                        //onPaging: hideContextMenu,
+                        //multiselect:false
+                        
+                    });
+                    
+            Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.TaskListController.getUrgentTaskData}',
+            {filter:'ABC'},
+            function(result, event){
+            
+                if (event.status) {
+                	console.log(result);
+                	var data = [];
+                	for (var i = 0; i < result.length; i++){
+                		console.log(i + result[i]);
+                		if (typeof result[i] === 'object'){
+                			data.push(result[i]);
+                		}
+                	}
+                    
+                    
+                    for (i = 0; i < data.length; i++) {
+                    	
+                        $grid.jqGrid('addRowData',i, data[i]);
+                    }
+                    
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+        
+        $(window).resize(function(){
+        	var $grid = $("#jsontask");
+        	var wg = $(window).width();
+        	var hg = $(window).height();
+        	$grid.setGridWidth(w - 20);
+        	//$grid.setGridHeight(h - 100);
+        });
+        $(window).resize();
+        
+        
+                                   
+     }); //End of ready()
+     
+     
+     
+            
+            </script>
+            
+                
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

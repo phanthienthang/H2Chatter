@@ -1,15 +1,74 @@
-public with sharing class TaskListController {
+/*
+ * This source is refered from:
+ * https://developer.salesforce.com/forums/ForumsMain?id=906F00000098QYIAY
+ */
+
+global with sharing class TaskListController {
 
     private integer counter=0;  //keeps track of the offset
     private integer list_size=20; //sets the page size or number of rows
     public integer total_size; //used to show user the total size of the list
         
-    public string selectedPage{get;set{selectedPage=value;}
-    }
+    public string selectedPage{get;set{selectedPage=value;}}
     
     public TaskListController() {
         total_size = [select count() from Task]; //set the total size in the constructor
         selectedPage='0';
+    }
+    
+    @RemoteAction
+    global static List<TaskData> getTaskData(Map<String, String> parameter) {
+    	System.debug('Parameters: '+ parameter);
+    	List<TaskData> lTaskDatas = new List<TaskData>();
+    	try 
+    	{						
+	    		for (Task lTask : [select Id, Subject, Status, Description from Task 
+    							where ActivityDate =: Date.today() order by Id]) {
+	    								
+	    			lTaskDatas.add(new TaskData(lTask.subject, lTask.status, lTask.Description));
+	    		}
+	    		return lTaskDatas;
+    	
+    	} catch (QueryException e) {
+    		ApexPages.addMessages(e);
+    		return null;
+    	}
+    	return null;
+    
+    }
+    
+    @RemoteAction
+    global static List<TaskData> getUrgentTaskData(Map<String, String> parameter) {
+    	System.debug('Parameters: '+ parameter);
+    	List<TaskData> lTaskDatas = new List<TaskData>();
+    	try 
+    	{						
+	    		for (Task lTask : [select Id, Subject, Status, Description from Task 
+    							where priority = 'High' order by Id]) {
+	    								
+	    			lTaskDatas.add(new TaskData(lTask.subject, lTask.status, lTask.Description));
+	    		}
+	    		return lTaskDatas;
+    	
+    	} catch (QueryException e) {
+    		ApexPages.addMessages(e);
+    		return null;
+    	}
+    	return null;
+    
+    }
+    
+    global class TaskData {
+    	String subject;
+    	String status;
+    	String comment;
+    	
+    	public TaskData(String iSubject, String iStatus, String iComment) {
+    		this.subject = iSubject;
+    		this.status = iStatus;
+    		this.comment = iComment;
+    	}
+    	
     }
     
     public Task[] getTasks() {

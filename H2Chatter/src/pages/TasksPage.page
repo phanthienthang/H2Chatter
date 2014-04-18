@@ -1,21 +1,22 @@
 <apex:page sidebar="false" showHeader="false" controller="TaskListController">
     <apex:form >
-        <apex:pageBlock >               
+        <apex:pageBlock >     
+                  
             <apex:actionFunction action="{!refreshGrid}" name="queryByPage" reRender="myPanel,myButtons" >
                 <apex:param name="firstParam" assignTo="{!selectedPage}" value="" />
             </apex:actionFunction>
             
             <apex:dynamicComponent componentValue="{!myCommandButtons}"/>        
             
-            <apex:pageBlockSection title="Task List (Total List Size: {!total_size})" collapsible="false">
+            <apex:pageBlockSection title="Task List (Total List Size: {!total_size})" collapsible="false" columns="1">
             <apex:outputPanel id="myPanel">
             <apex:pageMessages id="theMessages" />
-            <apex:pageBlockTable value="{!tasks}" var="t" align="center">
-                <apex:column value="{!t.Subject}" />
-                <apex:column value="{!t.Status}" />
-                <apex:column value="{!t.Description}"/>
-                <apex:facet name="footer">Showing Page # {!pageNumber} of {!totalPages}</apex:facet>
-            </apex:pageBlockTable>
+	            <apex:pageBlockTable value="{!tasks}" var="t" align="center">
+	                <apex:column value="{!t.Subject}" />
+	                <apex:column value="{!t.Status}" />
+	                <apex:column value="{!t.Description}"/>
+	                <apex:facet name="footer">Showing Page # {!pageNumber} of {!totalPages}</apex:facet>
+	            </apex:pageBlockTable>
             </apex:outputPanel>
             </apex:pageBlockSection>    
         </apex:pageBlock>

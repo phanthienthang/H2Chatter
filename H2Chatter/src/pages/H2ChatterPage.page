@@ -24,11 +24,8 @@
         #mainframe {
             border-radius: 8px;
             box-shadow: 0 5px 15px 1px rgba(0, 0, 0, 0.6), 
-                0 0 200px 1px rgba(255, 255, 255, 0.5)};
-            
+                0 0 200px 1px rgba(255, 255, 255, 0.5);            
         }
-        
-        ul {list-style: none; padding: 0;}
         
         /*H2 Tree*/
         #h2htree {
@@ -47,8 +44,10 @@
             margin: 10px 5px 0 0;
             padding: 0 5px;
             cursor: pointer;
+            color: #fff;
             
         }
+        
         /*heading hover effect*/
         #h2htree h3:hover {
             color: #f29724;
@@ -87,13 +86,16 @@
         /*Lets hide the non active LIs by default*/
         #h2htree ul ul {
             display: none;
+            padding: 0;
         }
         #h2htree li.active ul {
             display: block;
+            padding: 0;
         }
-        #h2htree li.active {
+        #h2htree li.active, #h2htree li.active h3 {
             color: #f29724;
         }
+        
         
     </style>
     <apex:stylesheet value="{!URLFor($Resource.jquery_ui, 'css/jquery-ui.min.css')}"/>
@@ -121,12 +123,12 @@
                                      
                 </div>
                 <div id="h2htree">
-                    <ul>
+                    <ul style="padding: 0;">
                         <li class="active">
-                            <h3><span class="icon-heart"></span>Feed</h3>
+                            <h3 accesskey="Feed"><span class="icon-heart"></span>Feed</h3>
                             <ul>
-                                <li><a>Followers</a></li>
-                                <li><a>Following</a></li>
+                                <li><a accesskey="Followers">Followers</a></li>
+                                <li><a accesskey="Following">Following</a></li>
                             </ul>
                         </li>
                         <li>
@@ -140,13 +142,10 @@
                         </li>
                         <!-- we will keep this LI open by default -->
                         <li>
-                            <h3><span class="icon-tasks"></span>Tasks</h3>
+                            <h3 accesskey="Tasks"><span class="icon-tasks"></span>Tasks</h3>
                             <ul>
-                                <li><a>Todays tasks</a></li>
-                                <li><a>Urgent</a></li>
-                                <li><a>Overdues</a></li>
-                                <li><a>Recurring</a></li>
-                                <li><a>Settings</a></li>
+                                <li><a accesskey="TaskDay">Today's tasks</a></li>
+                                <li><a accesskey="TaskUrgent">Urgent</a></li>                                
                             </ul>
                         </li>
                         <li>
@@ -222,9 +221,11 @@
                     });
                     
                     function callUpdate(iMenu) {
-                        var lText = $(iMenu).text(),
+                    	
+                        var lText = $(iMenu).attr("accesskey"),
                             lPageLink = lText+"Page";
-                        if (lText.indexOf($("#mainframe").attr("title")) == -1) {
+                            console.log(lText);
+                        if (lText.indexOf($("#mainframe").attr("type")) == -1) {
                             $("#mainframe").attr("title", lText);
                             $("#mainframe").attr("src", lPageLink);
                             
