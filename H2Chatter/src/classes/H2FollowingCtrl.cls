@@ -1,9 +1,10 @@
 public with sharing class H2FollowingCtrl {
 	
 	public List<EntitySubscription> followings {get; set;}
+	public String mAccountJson;
+	public String mAccSubscript {get; set;}
 	
 	public H2FollowingCtrl() {
-		
 		Map<String, AccountFollowDetail> lAccountMap = new Map<String, AccountFollowDetail>();
 		
 		List<String> lAccountIds = new List<String>();
@@ -17,6 +18,8 @@ public with sharing class H2FollowingCtrl {
 		for (Account ac: lAccounts) {
 			lAccountMap.put(ac.id, new AccountFollowDetail(ac.name, ac.billingstreet));
 		}
+		
+		mAccSubscript = JSON.serialize(lAccountMap);
 	}
 	
 	

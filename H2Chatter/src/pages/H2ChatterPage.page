@@ -5,7 +5,7 @@
         .h2chatter .threecols {width: 100%; margin-top: 2px;}
         .threecols .headerContent{overflow: hidden; position: relative; display: block;}
         .threecols .leftContent{display: inline-block; float: left; width: 20%; padding-left: 5px; }
-        .threecols .mainContent{display: inline-block; padding-left: 12px; border-left: 1px solid #e9eaea; width: 75% !important; margin: 0px;}
+        .threecols .mainContent{display: inline-block; padding-left: 12px; border-left: 1px solid #e9eaea; width: 55%; margin: 0px;}
         
         .headerContent .pageTitle {font-size: 32px; color: #fff; font-family: arial; padding-left: 5px; font-weight: normal;margin-left: 4px;}
         
@@ -19,6 +19,7 @@
         
         .msgNavigation {padding-top: 10px;}
         .msgNavigation ul {padding: 0; margin: 0px;}
+        
 
         #mainframe {
             border-radius: 8px;
@@ -26,15 +27,7 @@
                 0 0 200px 1px rgba(255, 255, 255, 0.5)};
             
         }
-        /*Override style*/
-        .chatterexpando{border-radius: 4px;}
-        .chatterfeedshell {            
-            border-radius: 8px; 
-            padding-bottom: 10px; 
-            width: 76%; 
-            box-shadow: 0 5px 15px 1px rgba(0, 0, 0, 0.6), 
-                0 0 200px 1px rgba(255, 255, 255, 0.5)}
-        .feedrightbar, .bPageTitle {display:none}
+        
         ul {list-style: none; padding: 0;}
         
         /*H2 Tree*/
@@ -239,28 +232,36 @@
                     }
                 });
                 
-                function userDetail(iName) {
-                    $("#user_info_dlg").dialog({
-                          title: iName,
-                          modal: true,
-                          show: {
+                function userDetail(obj) {
+                    var dialog = $("#user_info_dlg").dialog({
+                    	
+                    	title: obj.name,
+                        modal: true,
+                        height: 150,
+                        show: {                        	
                             effect: "clip",
                             duration: 500
-                          },
-                          hide: {
+                        },
+                        hide: {                        	
                             effect: "explode",
                             duration: 1000
-                          }
-                        });
+                        }
+                    });
+                    
+                    $("#user_detail_street", dialog).text(obj.address);
                 }
             </script>           
             
             <div class="mainContent">
-                <apex:iframe width="75%" height="100%" src="/apex/FeedPage" id="mainframe" title="Feed"/>
+                <apex:iframe width="100%" height="100%" src="/apex/FeedPage" id="mainframe" title="Feed"/>
                 
             </div>
             <div class="clearingBox"></div>
         </div>        
     </div>
-    <div id="user_info_dlg" style="display: none"></div>
+    <div id="user_info_dlg" style="display: none; background: #eeeeee;">
+    	<div id="content_info">
+    		<label id="user_detail_street"></label>
+    	</div>
+    </div>
 </apex:page>
