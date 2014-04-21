@@ -132,12 +132,12 @@
                             </ul>
                         </li>
                         <li>
-                            <h3><span class="icon-dashboard"></span>Dashboard</h3>
+                            <h3 accesskey="Dashboard"><span class="icon-dashboard"></span>Dashboard</h3>
                             <ul>
-                                <li><a>Reports</a></li>
-                                <li><a>Search</a></li>
-                                <li><a>Graphs</a></li>
-                                <li><a>Settings</a></li>
+                                <li><a accesskey="Reports">Reports</a></li>
+                                <li><a accesskey="Search">Search</a></li>
+                                <li><a accesskey="Graphs">Graphs</a></li>
+                                <!-- <li><a accesskey="Settings">Settings</a></li> -->
                             </ul>
                         </li>
                         <!-- we will keep this LI open by default -->
@@ -149,32 +149,32 @@
                             </ul>
                         </li>
                         <li>
-                            <h3><span class="icon-calendar"></span>Calendar</h3>
+                            <h3 accesskey="Calendar"><span class="icon-calendar"></span>Calendar</h3>
                             <ul>
-                                <li><a>Current Month</a></li>
-                                <li><a>Current Week</a></li>
-                                <li><a>Previous Month</a></li>
-                                <li><a>Previous Week</a></li>
-                                <li><a>Next Month</a></li>
-                                <li><a>Next Week</a></li>
-                                <li><a>Team Calendar</a></li>
-                                <li><a>Private Calendar</a></li>
-                                <li><a>Settings</a></li>
+                                <li><a accesskey="CurrentMonth">Current Month</a></li>
+                                <li><a accesskey="CurrentWeek">Current Week</a></li>
+                                <li><a accesskey="PreMonth">Previous Month</a></li>
+                                <li><a accesskey="PreWeek">Previous Week</a></li>
+                                <li><a accesskey="NextMonth">Next Month</a></li>
+                                <li><a accesskey="NextWeek">Next Week</a></li>
+                                <li><a accesskey="NextCalendar">Team Calendar</a></li>
+                                <li><a accesskey="PrivateCalendar">Private Calendar</a></li>
+                                <!-- <li><a>Settings</a></li> -->
                             </ul>
                         </li>
                         <li>
-                            <h3><span class="icon-heart"></span>Favourites</h3>
+                            <h3 accesskey="Favourites"><span class="icon-heart"></span>Favourites</h3>
                             <ul>
-                                <li><a>Global favs</a></li>
-                                <li><a>My favs</a></li>
-                                <li><a>Team favs</a></li>
-                                <li><a>Settings</a></li>
+                                <li><a accesskey="GlobalFavs">Global favs</a></li>
+                                <li><a accesskey="MyFavs">My favs</a></li>
+                                <li><a accesskey="TeamFavs">Team favs</a></li>
+                                <!-- <li><a>Settings</a></li> -->
                             </ul>
                         </li>
                         <li>
                             <h3><span class="icon-heart"></span>Tools</h3>
                             <ul>
-                                <li><a>Uploaded Files</a></li>                                
+                                <li><a accesskey="UploadFile">Uploaded Files</a></li>                                
                             </ul>
                         </li>
                     </ul>
@@ -225,7 +225,7 @@
                         var lText = $(iMenu).attr("accesskey"),
                             lPageLink = lText+"Page";
                             console.log(lText);
-                        if (lText.indexOf($("#mainframe").attr("type")) == -1) {
+                        if (lText && lText.indexOf($("#mainframe").attr("type")) == -1) {
                             $("#mainframe").attr("title", lText);
                             $("#mainframe").attr("src", lPageLink);
                             
