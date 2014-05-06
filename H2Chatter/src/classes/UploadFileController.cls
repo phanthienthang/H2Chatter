@@ -1,6 +1,6 @@
 global with sharing class UploadFileController {
 	
-	public String parentId {get; set;}
+	public String parentId {get; set;} 
 	
 	
 	public UploadFileController() {
@@ -23,22 +23,38 @@ global with sharing class UploadFileController {
         //If recordId is blank this is the first part of a multi piece upload
         if(attachmentId == '' || attachmentId == null){
         	
-        	Attachment att = new Attachment();
-            att.ParentId = parentId;
+        	Document doc = new Document();
+        	doc.Body = EncodingUtil.Base64Decode(base64BlobValue);
+        	doc.Name = fileName;
+        	doc.ContentType = contentType;
+        	doc.AuthorId = Userinfo.getUserId();
+        	doc.FolderId = '00li0000001aEtl';
+        	insert doc;
+        	
+        	//Attachment att = new Attachment();
+            //att.ParentId = parentId;
             //att.OwnerId  = '001i000000kFxOlAAK';
-            att.Body = EncodingUtil.Base64Decode(base64BlobValue);
-            att.Name = fileName;
-            att.ContentType = contentType;
-            insert att;
+            //att.Body = EncodingUtil.Base64Decode(base64BlobValue);
+            //att.Name = fileName;
+            //att.ContentType = contentType;
+            //insert att;
             
             //Return the new attachment Id
-            return att.Id;
+            return doc.Id;
             
         }else{
-            for(Attachment atm : [select Id, Body from Attachment where Id = :attachmentId]){
+        	
+        	
+        	for (Document doc : [select Id, Body from Document where Id = :attachmentId]){
+        		 //Take the body of the current attachment, convert to base64 string, append base64 value sent from page, then convert back to binary for the body
+                update new Document(Id = attachmentId, Body = EncodingUtil.Base64Decode(EncodingUtil.Base64Encode(doc.Body) + base64BlobValue));
+        	}
+        	
+        	
+            /*for(Attachment atm : [select Id, Body from Attachment where Id = :attachmentId]){
                 //Take the body of the current attachment, convert to base64 string, append base64 value sent from page, then convert back to binary for the body
                 update new Attachment(Id = attachmentId, Body = EncodingUtil.Base64Decode(EncodingUtil.Base64Encode(atm.Body) + base64BlobValue));
-            }
+            }*/
             
             //Return the Id of the attachment we are currently processing
             return attachmentId;

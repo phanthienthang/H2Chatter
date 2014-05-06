@@ -1,0 +1,30 @@
+<apex:page >
+  <apex:includeScript value="{!$Resource.jquery}"/>
+  <script>
+    jQuery(document).ready(function($) {
+      $('#queryform').submit(function(){
+        $.ajax($('#query').val(),
+        {
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer {!$Api.Session_ID}');
+          },
+          success: function(response) {
+            $('#results').text(JSON.stringify(response, null, '  '));
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.status + ': ' + errorThrown);
+          }
+        });
+        return false;
+      });
+    });
+  </script>
+  <h1>Test REST API from JavaScript</h1>
+  <form id="queryform">
+    <input id="query" size="120" value="/services/data/v29.0/query?q=SELECT+Name+FROM+Account+LIMIT+10"/>
+    <input type="submit" id="submit" value="Submit" />
+  </form>
+  <p>Results:</p>
+  <pre id="results">
+  </pre>
+</apex:page>

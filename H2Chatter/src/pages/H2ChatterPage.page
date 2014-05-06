@@ -109,7 +109,7 @@
             </div>
             <div class="leftContent">
                 <div class="userStatus">
-                    <div class="userStatusImg"><chatter:userPhotoUpload ></chatter:userPhotoUpload></div>
+                    <div class="userStatusImg"><chatter:userPhotoUpload /></div>
                     <div class="userStatusName"><a>{!$User.FirstName} {!$User.LastName}</a></div>
                     <div class="userStatusMsg">
                           <div class="msgNavigation">
@@ -149,16 +149,16 @@
                             </ul>
                         </li>
                         <li>
-                            <h3 accesskey="Calendar"><span class="icon-calendar"></span>Calendar</h3>
+                            <h3><span class="icon-calendar"></span>Calendar</h3>
                             <ul>
-                                <li><a accesskey="CurrentMonth">Current Month</a></li>
-                                <li><a accesskey="CurrentWeek">Current Week</a></li>
-                                <li><a accesskey="PreMonth">Previous Month</a></li>
-                                <li><a accesskey="PreWeek">Previous Week</a></li>
-                                <li><a accesskey="NextMonth">Next Month</a></li>
-                                <li><a accesskey="NextWeek">Next Week</a></li>
-                                <li><a accesskey="NextCalendar">Team Calendar</a></li>
-                                <li><a accesskey="PrivateCalendar">Private Calendar</a></li>
+                                <li><a accesskey="CalCurrentMonth">Current Month</a></li>
+                                <li><a accesskey="CalCurrentWeek">Current Week</a></li>
+                                <li><a accesskey="CalPreMonth">Previous Month</a></li>
+                                <li><a accesskey="CalPreWeek">Previous Week</a></li>
+                                <li><a accesskey="CalNextMonth">Next Month</a></li>
+                                <li><a accesskey="CalNextWeek">Next Week</a></li>
+                                <li><a accesskey="CalNextCalendar">Team Calendar</a></li>
+                                <li><a accesskey="CalPrivateCalendar">Private Calendar</a></li>
                                 <!-- <li><a>Settings</a></li> -->
                             </ul>
                         </li>
@@ -224,7 +224,6 @@
                     	
                         var lText = $(iMenu).attr("accesskey"),
                             lPageLink = lText+"Page";
-                            console.log(lText);
                         if (lText && lText.indexOf($("#mainframe").attr("type")) == -1) {
                             $("#mainframe").attr("title", lText);
                             $("#mainframe").attr("src", lPageLink);

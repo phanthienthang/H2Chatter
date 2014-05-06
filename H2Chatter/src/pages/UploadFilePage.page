@@ -10,9 +10,9 @@
 			float: left;
 			max-width: 235px;
 			overflow: hidden;
-			position: absolute;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+			
 		}
 		.percentComplete{
 			float: right;
@@ -24,7 +24,7 @@
 			padding: 10px;
 		}
 		.statusBarPercent{
-			background-color: #1797C0;
+			background-color: #f29724;
 			float: left;
 			height: 9px;
 			margin: 1px;
@@ -39,15 +39,19 @@
 			border-radius: 3px 3px 3px 3px;
 			margin-top: 6px;
 			padding: 10px;
+			max-height: 575px;
+			overflow: auto;
 		}
 		.uploadBox{
-			background-color: #F8F8F8;
+			background-color: #eeeeee;
 			border: 1px solid #EAEAEA;
 			border-radius: 4px 4px 4px 4px;
 			color: #333333;
 			font-size: 12px;
 			padding: 6px;
 			width: 98%;
+			max-height: 500px;
+			overflow: auto;
 		}
 		.uploadError{
 			border-color: #CE0000;
@@ -55,6 +59,12 @@
 		.uploadTable{
 			margin-left: auto;
 			margin-right: auto;
+			width: 100%;
+			background: #eeeeee;
+		}
+		.uploadTableCont {
+			width: 100%;
+			background: #eeeeee;
 		}
 	</style>
 	<apex:stylesheet value="{!URLFor($Resource.jquery_ui, 'css/jquery-ui.min.css')}"/> 
@@ -64,6 +74,8 @@
    	
    	var $ = jQuery.noConflict();
 	$(document).ready(function() {
+	
+		$('div.uploadBox').height(($(window).height()-50));
 	
 		var parentId = "{!parentId}"; //Will be used by FileUploadJS.js but must be declared here. Static resources don't support dynamic values.
 	
@@ -131,14 +143,16 @@
 			
 			//Once elements have been added to the page representing the uploads, start the actual upload process
 			checkForUploads();
+			
 		}
 		
 		function checkForUploads(){
 		
 			//Get div of the first matching upload element that is 'pending', if none, all uploads are complete
-			$upload = $(".upload:first[data-status='pending']");
+			$upload = $(".upload[data-status='pending']");
 			
 			if($upload.length != 0){
+				$upload = $upload.first();
 				//Based on index of the div, get correct file from files array
 				currentFile = files[$upload.attr('data-index')];
 				
@@ -276,12 +290,12 @@
 									attachmentId = result;
 														
 									//Call process byteChunkArray to upload the next piece of the file
-									processByteChunkArray(attachmentId);
+									processByteChunkArray(attachmentId);							
 				
 								}else{
 									//If script is here something broke on the JavasSript remoting call
 									//Add classes to reflect error
-									$upload.attr('data-status','complete');
+									$upload.attr('data-status','completed');
 									$upload.addClass('uploadError');
 									$upload.find(".statusPercent").addClass('statusPercentError');
 									$upload.attr('title',event.message);
@@ -303,7 +317,7 @@
 					//Change name of file to link of uploaded attachment
 					$upload.find(".name").html('<a href="' + VIEW_URL + attachmentId + '" target="_blank">'+currentFile.name+'</a>');
 					
-					//Call the checkForUploads to find the next upload div that has data-status="incomplete" and start the upload process. 
+					//Call the checkForUploads to find the next upload div that has data-status="incomplete" and start the upload process.
 					checkForUploads();
 				}
 			}
@@ -311,9 +325,8 @@
 	
 	
     </script>
-    
-    <div class="uploadBox">
-        <table class="uploadTable">
+    <div class="uploadTableCont">
+    	<table class="uploadTable">
             <tr>
                 <td><input type="file" id="filesInput" name="file" multiple="multiple"/></td>
                 <td class="buttonTD">
@@ -322,5 +335,7 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="uploadBox">
     </div>    
 </apex:page>

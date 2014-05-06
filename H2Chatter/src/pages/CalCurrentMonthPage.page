@@ -1,0 +1,26 @@
+<apex:page showHeader="false" sidebar="false">
+<apex:styleSheet value="{!URLFOR($Resource.EventCalendar, 'css/paragridma.css')}"/>
+<apex:styleSheet value="{!URLFOR($Resource.EventCalendar, 'css/eventCalendar.css')}"/>
+<apex:styleSheet value="{!URLFOR($Resource.EventCalendar, 'css/eventCalendar_theme_responsive.css')}"/>
+<style>
+	.calendarbox { width: 98%; padding: 10px;}
+	.calendarbox div {width: 100% !important;}
+</style>
+<apex:includeScript value="{!$Resource.jquery}"/>
+<apex:includeScript value="{!URLFOR($Resource.EventCalendar, 'js/jquery.eventCalendar.js')}"/>
+
+<div class="calendarbox">
+	<div id="eventCalendar"></div>
+</div>
+<script>
+	$(document).ready(function(){
+		$('#eventCalendar').eventCalendar({
+			jsonData: [
+				{ "date": "2014-04-23 17:30:00", "type": "meeting", "title": "Test Last Year", "description": "Lorem Ipsum dolor set", "url": "" }
+			],
+			//startWeekOnMonday: false,
+			jsonDateFormat: 'human' //'YYYY-MM-DD HH:MM:SS'
+		});
+	});
+</script>
+</apex:page>
